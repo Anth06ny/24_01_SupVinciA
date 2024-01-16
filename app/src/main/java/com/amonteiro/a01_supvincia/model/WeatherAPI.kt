@@ -1,15 +1,24 @@
 package com.amonteiro.a01_supvincia.model
 
+import com.google.gson.Gson
 import okhttp3.OkHttpClient
 import okhttp3.Request
 
 fun main() {
-    val res = WeatherAPI.sendGet("https://www.google.fr")
+    val res = WeatherAPI.loadWeather("Nice")
     println(res)
 }
 
 object WeatherAPI {
     val client = OkHttpClient()
+    val gson = Gson()
+
+    const val URL_API = "https://api.openweathermap.org/data/2.5/weather?q=%s&appid=b80967f0a6bd10d23e44848547b26550&units=metric&lang=fr"
+
+    fun loadWeather(cityName : String): WeatherBean {
+        val json = sendGet(URL_API.format(cityName))
+        return gson.fromJson(json, WeatherBean::class.java)
+    }
 
     //Méthode qui prend en entrée une url, execute la requête
     //Retourne le code HTML/JSON reçu
@@ -29,3 +38,11 @@ object WeatherAPI {
         }
     }
 }
+
+/* -------------------------------- */
+// Bean
+/* -------------------------------- */
+data class WeatherBean(var main : TempBean, var wind:WindBean, var name:String, var toto:String? )
+data class TempBean(var temp : Double)
+data class WindBean(var speed : Double)
+

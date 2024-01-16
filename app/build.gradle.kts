@@ -64,7 +64,11 @@ dependencies {
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
 
+    //Requete web
     implementation("com.squareup.okhttp3:okhttp:+")
+
+    //Parsing JSON
+    implementation("com.google.code.gson:gson:+")
 
 
 
