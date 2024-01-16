@@ -1,6 +1,7 @@
 package com.amonteiro.a01_supvincia.exo
 
 fun main() {
+
     val res = boulangerie(
         scanNumber("Nb croissant : "),
         scanNumber("Nb sandwitch : "),
