@@ -8,9 +8,14 @@ fun main() {
     repeat(10) {
         println(randomName.next() + " ")
     }
+    val list = arrayListOf("Bob", "Tobby", "John")
+    println(list.joinToString { "${it} " }) //toto : 22 null : 20 Charles : 14
 }
 
-class RandomName(){
+
+
+class RandomName() {
+
 
     private val list = arrayListOf("Bob", "Tobby", "John")
     private var oldValue = ""
