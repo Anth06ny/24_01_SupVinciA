@@ -6,8 +6,7 @@ import okhttp3.OkHttpClient
 import okhttp3.Request
 
 fun main() {
-    val res = MexicanFoodAPI.loadFood(4)
-    println(res)
+
 }
 
 object MexicanFoodAPI {

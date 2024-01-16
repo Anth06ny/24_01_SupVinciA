@@ -3,11 +3,45 @@ package com.amonteiro.a01_supvincia.model
 import java.util.Random
 
 fun main() {
-    val u1 = User
-    u1.old++
-    val u2 = User
-    User.old++
-    print(u2.old)
+    val randomName = RandomName()
+    randomName.add("bobby")
+    repeat(10) {
+        println(randomName.next() + " ")
+    }
+}
+
+class RandomName(){
+
+    private val list = arrayListOf("Bob", "Tobby", "John")
+    private var oldValue = ""
+
+    fun add(s: String?) = if(!s.isNullOrBlank() && s !in list) list.add(s) else false
+
+
+    fun next() = list.random()
+
+    fun nextDiff2(): String {
+        oldValue = list.filter { it != oldValue }.random()
+        return oldValue
+    }
+
+    fun next2() = Pair(nextDiff(), nextDiff())
+
+    fun nextDiff3() = list.filter { it != oldValue }.random().also { oldValue = it }
+
+    fun nextDiff(): String {
+
+        var newValue = next()
+
+        while(newValue == oldValue) {
+            newValue = next()
+        }
+
+        oldValue = newValue
+        return newValue
+    }
+
+
 
 
 }
