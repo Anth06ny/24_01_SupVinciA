@@ -1,10 +1,16 @@
-package com.amonteiro.a01_supvincia.ui.myscreen
+package com.amonteiro.a01_supvincia.ui.screen
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import com.amonteiro.a01_supvincia.model.PictureData
 import com.amonteiro.a01_supvincia.model.pictureList
+import com.amonteiro.a01_supvincia.ui.theme._01_SupVinciATheme
 
 //Code affiché dans la Preview
 @Preview(
@@ -13,7 +19,7 @@ import com.amonteiro.a01_supvincia.model.pictureList
 )
 @Composable
 fun SearchScreenPreview() {
-    NomVotreProjetTheme {
+    _01_SupVinciATheme {
         Surface(modifier = Modifier.fillMaxWidth(), color = Color.LightGray) {
             SearchScreen()
         }
