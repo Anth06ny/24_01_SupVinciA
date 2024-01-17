@@ -1,14 +1,30 @@
 package com.amonteiro.a01_supvincia.exo
 
+data class PersonBean(var name:String, var note:Int)
+
+
 fun main() {
 
-    val res = boulangerie(
-        scanNumber("Nb croissant : "),
-        scanNumber("Nb sandwitch : "),
-        scanNumber("Nb baguette : ")
-    )
-    println("res=$res")
 
+    val toto : (Int)-> String = { it ->
+        print(it)
+        it.toString()
+    }
+
+    var res = toto(5)
+
+    val list = arrayListOf(PersonBean ("toto", 16),
+        PersonBean ("Tata", 20),
+        PersonBean ("Toto", 8),
+        PersonBean ("Charles", 14))
+
+    val isToto : (PersonBean) -> Boolean = {
+        it.name.equals("toto" , true)
+    }
+
+    println("\n\nAfficher combien de Toto ont plus que la moyenne de la classe")
+    val moyenne = list.map { it.note }.average()
+    println(list.count { isToto(it) && it.note >= moyenne })
 
 }
 

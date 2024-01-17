@@ -70,6 +70,9 @@ dependencies {
     //Parsing JSON
     implementation("com.google.code.gson:gson:+")
 
+    //Chargement image url
+    implementation("com.github.bumptech.glide:compose:1.0.0-beta01")
+
 
 
 }
