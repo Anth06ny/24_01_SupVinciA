@@ -1,6 +1,9 @@
 package com.amonteiro.a01_supvincia.ui.screen
 
+import android.content.res.Configuration
+import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -24,8 +27,13 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -54,7 +62,8 @@ fun SearchScreenPreview() {
 
 @Preview(
     showBackground = true,
-    showSystemUi = true
+    showSystemUi = true,
+    uiMode = Configuration.UI_MODE_NIGHT_YES
 )
 @Composable
 fun SearchScreenPreviewDark() {
@@ -68,15 +77,20 @@ fun SearchScreenPreviewDark() {
 //Composable représentant l'ensemble de l'écran
 @Composable
 fun SearchScreen() {
-    Column(modifier = Modifier.padding(8.dp)) {
+    Column(
+        modifier = Modifier
+            .background(Color.LightGray)
+            .padding(8.dp)
+    ) {
 
         SearchBar()
 
         Spacer(Modifier.size(8.dp))
 
         LazyColumn(
-            modifier= Modifier.weight(1f),
-            verticalArrangement = Arrangement.spacedBy(8.dp)) {
+            modifier = Modifier.weight(1f),
+            verticalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
             items(pictureList.size) {
                 PictureRowItem(data = pictureList[it])
             }
@@ -116,10 +130,12 @@ fun SearchScreen() {
 
 @Composable
 fun SearchBar(modifier: Modifier = Modifier) {
-    //TODO
+    var searchText = remember {
+        mutableStateOf("")
+    }
     TextField(
-        value = "", //Valeur par défaut
-        onValueChange = {newValue->}, //Action
+        value = searchText.value, //Valeur par défaut
+        onValueChange = { newValue -> searchText.value = newValue }, //Action
         leadingIcon = { //Image d'icone
             Icon(
                 imageVector = Icons.Default.Search,
@@ -140,10 +156,19 @@ fun SearchBar(modifier: Modifier = Modifier) {
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
 fun PictureRowItem(modifier: Modifier = Modifier, data: PictureData) {
+
+    var isExpanded by remember { mutableStateOf(false) }
+
+    var text = if(isExpanded) data.longText else (data.longText.take(20) + "...")
+
     Row(modifier = modifier
         .fillMaxWidth()
-        .background( MaterialTheme.colorScheme.surface)
-        .heightIn(max = 100.dp)) {
+        .background(MaterialTheme.colorScheme.surface)
+        .heightIn(max = 100.dp)
+        .clickable {
+            isExpanded = !isExpanded
+        }
+    ) {
 
         GlideImage(
             model = data.url,
@@ -169,9 +194,10 @@ fun PictureRowItem(modifier: Modifier = Modifier, data: PictureData) {
                 fontSize = 20.sp
             )
             Text(
-                text = data.longText.take(20) + "...",
+                text = text,
                 fontSize = 14.sp,
-                color = MaterialTheme.colorScheme.primary
+                color = MaterialTheme.colorScheme.primary,
+                modifier = Modifier.animateContentSize()
             )
         }
     }
