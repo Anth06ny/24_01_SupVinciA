@@ -1,20 +1,31 @@
 package com.amonteiro.a01_supvincia.ui.screen
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Clear
+import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.filled.Send
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -35,7 +46,20 @@ import com.bumptech.glide.integration.compose.placeholder
 @Composable
 fun SearchScreenPreview() {
     _01_SupVinciATheme {
-        Surface(modifier = Modifier.fillMaxWidth(), color = Color.LightGray) {
+        Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
+            SearchScreen()
+        }
+    }
+}
+
+@Preview(
+    showBackground = true,
+    showSystemUi = true
+)
+@Composable
+fun SearchScreenPreviewDark() {
+    _01_SupVinciATheme {
+        Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
             SearchScreen()
         }
     }
@@ -44,19 +68,81 @@ fun SearchScreenPreview() {
 //Composable représentant l'ensemble de l'écran
 @Composable
 fun SearchScreen() {
-    Column {
-        PictureRowItem(data = pictureList[0])
+    Column(modifier = Modifier.padding(8.dp)) {
+
+        SearchBar()
+
+        Spacer(Modifier.size(8.dp))
+
+        LazyColumn(
+            modifier= Modifier.weight(1f),
+            verticalArrangement = Arrangement.spacedBy(8.dp)) {
+            items(pictureList.size) {
+                PictureRowItem(data = pictureList[it])
+            }
+        }
+
+        Row(modifier = Modifier.align(Alignment.CenterHorizontally)) {
+            Button(
+                onClick = { /* Do something! */ },
+                contentPadding = ButtonDefaults.ButtonWithIconContentPadding
+            ) {
+                Icon(
+                    Icons.Filled.Clear,
+                    contentDescription = "Localized description",
+                    modifier = Modifier.size(ButtonDefaults.IconSize)
+                )
+                Spacer(Modifier.size(ButtonDefaults.IconSpacing))
+                Text("Clear filter")
+            }
+
+            Spacer(Modifier.size(8.dp))
+
+            Button(
+                onClick = { /* Do something! */ },
+                contentPadding = ButtonDefaults.ButtonWithIconContentPadding
+            ) {
+                Icon(
+                    Icons.Filled.Send,
+                    contentDescription = "Localized description",
+                    modifier = Modifier.size(ButtonDefaults.IconSize)
+                )
+                Spacer(Modifier.size(ButtonDefaults.IconSpacing))
+                Text("Load data")
+            }
+        }
     }
+}
+
+@Composable
+fun SearchBar(modifier: Modifier = Modifier) {
+    //TODO
+    TextField(
+        value = "", //Valeur par défaut
+        onValueChange = {newValue->}, //Action
+        leadingIcon = { //Image d'icone
+            Icon(
+                imageVector = Icons.Default.Search,
+                tint = MaterialTheme.colorScheme.primary,
+                contentDescription = null
+            )
+        },
+        label = { Text("Enter text") }, //Texte d'aide qui se déplace
+        //Comment le composant doit se placer
+        modifier = modifier
+            .fillMaxWidth() // Prend toute la largeur
+            .heightIn(min = 56.dp) //Hauteur minimum
+    )
+
 }
 
 //Composable affichant 1 PictureData
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
 fun PictureRowItem(modifier: Modifier = Modifier, data: PictureData) {
-    Row(modifier = Modifier
-        .padding(8.dp)
+    Row(modifier = modifier
         .fillMaxWidth()
-        .background(Color.White)
+        .background( MaterialTheme.colorScheme.surface)
         .heightIn(max = 100.dp)) {
 
         GlideImage(
