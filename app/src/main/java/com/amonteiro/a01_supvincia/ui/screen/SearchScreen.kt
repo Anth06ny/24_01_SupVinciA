@@ -80,6 +80,10 @@ fun SearchScreenPreviewDark() {
 @Composable
 fun SearchScreen(navController: NavHostController? = null, viewModel: MainViewModel = androidx.lifecycle.viewmodel.compose.viewModel()) {
 
+//    LaunchedEffect("") {
+//        viewModel.loadData()
+//    }
+
     val filterList = viewModel.myList.filter {
         it.text.contains(viewModel.searchText.value)
     }
