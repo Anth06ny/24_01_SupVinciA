@@ -27,6 +27,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -54,6 +55,8 @@ import com.bumptech.glide.integration.compose.placeholder
 fun SearchScreenPreview() {
     _01_SupVinciATheme {
         Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
+
+
             SearchScreen()
         }
     }
@@ -76,12 +79,21 @@ fun SearchScreenPreviewDark() {
 //Composable représentant l'ensemble de l'écran
 @Composable
 fun SearchScreen() {
+
+    var searchText = remember {
+        mutableStateOf("")
+    }
+
+    val filterList = pictureList.filter {
+        it.text.contains(searchText.value)
+    }
+
     Column(
         modifier = Modifier
             .padding(8.dp)
     ) {
 
-        SearchBar()
+        SearchBar(searchText = searchText)
 
         Spacer(Modifier.size(8.dp))
 
@@ -89,14 +101,14 @@ fun SearchScreen() {
             modifier = Modifier.weight(1f),
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            items(pictureList.size) {
-                PictureRowItem(data = pictureList[it])
+            items(filterList.size) {
+                PictureRowItem(data = filterList[it])
             }
         }
 
         Row(modifier = Modifier.align(Alignment.CenterHorizontally)) {
             Button(
-                onClick = { /* Do something! */ },
+                onClick = { searchText.value = "" },
                 contentPadding = ButtonDefaults.ButtonWithIconContentPadding
             ) {
                 Icon(
@@ -127,10 +139,11 @@ fun SearchScreen() {
 }
 
 @Composable
-fun SearchBar(modifier: Modifier = Modifier) {
-    var searchText = remember {
-        mutableStateOf("")
-    }
+fun SearchBar(
+    modifier: Modifier = Modifier,
+    searchText: MutableState<String> = remember { mutableStateOf("") }
+) {
+
     TextField(
         value = searchText.value, //Valeur par défaut
         onValueChange = { newValue -> searchText.value = newValue }, //Action
@@ -157,7 +170,7 @@ fun PictureRowItem(modifier: Modifier = Modifier, data: PictureData) {
 
     var isExpanded by remember { mutableStateOf(false) }
 
-    var text = if(isExpanded) data.longText else (data.longText.take(20) + "...")
+    var text = if (isExpanded) data.longText else (data.longText.take(20) + "...")
 
     Row(modifier = modifier
         .fillMaxWidth()
