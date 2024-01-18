@@ -1,0 +1,121 @@
+package com.amonteiro.a01_supvincia.ui.screen
+
+import android.content.res.Configuration
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
+import com.amonteiro.a01_supvincia.R
+import com.amonteiro.a01_supvincia.model.pictureList
+import com.amonteiro.a01_supvincia.ui.theme._01_SupVinciATheme
+import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
+import com.bumptech.glide.integration.compose.GlideImage
+import com.bumptech.glide.integration.compose.placeholder
+
+//Code affiché dans la Preview
+@Preview(
+    showBackground = true,
+    showSystemUi = true
+)
+@Composable
+fun DetailScreenPreview() {
+    _01_SupVinciATheme {
+        Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
+
+
+            DetailScreen(0)
+        }
+    }
+}
+
+@Preview(
+    showBackground = true,
+    showSystemUi = true,
+    uiMode = Configuration.UI_MODE_NIGHT_YES
+)
+@Composable
+fun DetailScreenPreviewDark() {
+    _01_SupVinciATheme {
+        Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
+            DetailScreen(0)
+        }
+    }
+}
+
+//Composable représentant l'ensemble de l'écran
+@OptIn(ExperimentalGlideComposeApi::class)
+@Composable
+fun DetailScreen(position:Int, navController: NavHostController? = null) {
+
+    val pictureData = pictureList.getOrNull(position)
+
+    Column(
+        modifier = Modifier
+            .padding(8.dp)
+    ) {
+
+
+        Text(text = pictureData?.text ?: "Pas de donnée",
+            textAlign = TextAlign.Center,
+            modifier = Modifier.fillMaxWidth()
+        )
+
+        if(pictureData != null) {
+            GlideImage(
+                model = pictureData.url,
+                //Dans string.xml
+                //contentDescription = getString(R.string.picture_of_cat),
+                //En dur
+                contentDescription = "une photo de chat",
+                loading = placeholder(R.mipmap.ic_launcher_round), // Image de chargement
+                // Image d'échec. Permet également de voir l'emplacement de l'image dans la Preview
+                failure = placeholder(R.mipmap.ic_launcher),
+                contentScale = ContentScale.Fit,
+                //même autres champs qu'une Image classique
+                modifier = Modifier
+                    .fillMaxWidth(                    )
+                    .weight(1f)
+            )
+        }
+
+        Text(text = pictureData?.longText ?: "Pas de donnée",
+            textAlign = TextAlign.Center,
+            modifier = Modifier.fillMaxWidth())
+
+        Button(
+            onClick = {
+
+                navController?.popBackStack()
+                      },
+            contentPadding = ButtonDefaults.ButtonWithIconContentPadding,
+            modifier = Modifier.align(alignment = Alignment.CenterHorizontally)
+        ) {
+            Icon(
+                Icons.Filled.ArrowBack,
+                contentDescription = "Localized description",
+                modifier = Modifier.size(ButtonDefaults.IconSize)
+            )
+            Spacer(Modifier.size(ButtonDefaults.IconSpacing))
+            Text("Retour")
+        }
+
+    }
+}

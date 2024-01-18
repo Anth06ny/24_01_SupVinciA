@@ -38,9 +38,11 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
 import com.amonteiro.a01_supvincia.R
 import com.amonteiro.a01_supvincia.model.PictureData
 import com.amonteiro.a01_supvincia.model.pictureList
+import com.amonteiro.a01_supvincia.ui.Routes
 import com.amonteiro.a01_supvincia.ui.theme._01_SupVinciATheme
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
@@ -55,8 +57,6 @@ import com.bumptech.glide.integration.compose.placeholder
 fun SearchScreenPreview() {
     _01_SupVinciATheme {
         Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
-
-
             SearchScreen()
         }
     }
@@ -78,7 +78,7 @@ fun SearchScreenPreviewDark() {
 
 //Composable représentant l'ensemble de l'écran
 @Composable
-fun SearchScreen() {
+fun SearchScreen(navController: NavHostController? = null) {
 
     var searchText = remember {
         mutableStateOf("")
@@ -102,7 +102,9 @@ fun SearchScreen() {
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             items(filterList.size) {
-                PictureRowItem(data = filterList[it])
+                PictureRowItem(data = filterList[it], onPictureClick = {
+                    navController?.navigate(Routes.DetailScreen.addParam(it))
+                } )
             }
         }
 
@@ -166,7 +168,7 @@ fun SearchBar(
 //Composable affichant 1 PictureData
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
-fun PictureRowItem(modifier: Modifier = Modifier, data: PictureData) {
+fun PictureRowItem(modifier: Modifier = Modifier, data: PictureData, onPictureClick : () -> Unit = {}) {
 
     var isExpanded by remember { mutableStateOf(false) }
 
@@ -176,9 +178,6 @@ fun PictureRowItem(modifier: Modifier = Modifier, data: PictureData) {
         .fillMaxWidth()
         .background(MaterialTheme.colorScheme.surface)
         .heightIn(max = 100.dp)
-        .clickable {
-            isExpanded = !isExpanded
-        }
     ) {
 
         GlideImage(
@@ -195,11 +194,14 @@ fun PictureRowItem(modifier: Modifier = Modifier, data: PictureData) {
             modifier = Modifier
                 .heightIn(max = 100.dp) //Sans hauteur il prendra tous l'écran
                 .widthIn(max = 100.dp)
+                .clickable(onClick = onPictureClick)
         )
 
         Spacer(modifier = Modifier.size(8.dp))
 
-        Column {
+        Column(modifier = Modifier.clickable {
+            isExpanded = !isExpanded
+        }) {
             Text(
                 text = data.text,
                 fontSize = 20.sp
