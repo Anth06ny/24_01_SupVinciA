@@ -25,7 +25,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.amonteiro.a01_supvincia.R
-import com.amonteiro.a01_supvincia.model.pictureList
+import com.amonteiro.a01_supvincia.model.MainViewModel
 import com.amonteiro.a01_supvincia.ui.theme._01_SupVinciATheme
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
@@ -64,9 +64,10 @@ fun DetailScreenPreviewDark() {
 //Composable représentant l'ensemble de l'écran
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
-fun DetailScreen(position: Int, navController: NavHostController? = null) {
+fun DetailScreen(position: Int, navController: NavHostController? = null, viewModel: MainViewModel = androidx.lifecycle.viewmodel.compose.viewModel()) {
 
-    val pictureData = pictureList.getOrNull(position)
+    //val pictureData = viewModel.myList.getOrNull(position)
+    val pictureData = viewModel.getFilterListBySearchText().getOrNull(position)
 
     Column(
         modifier = Modifier

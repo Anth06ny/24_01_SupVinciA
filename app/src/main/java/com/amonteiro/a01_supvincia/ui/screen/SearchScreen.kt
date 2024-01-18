@@ -40,8 +40,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.amonteiro.a01_supvincia.R
+import com.amonteiro.a01_supvincia.model.MainViewModel
 import com.amonteiro.a01_supvincia.model.PictureData
-import com.amonteiro.a01_supvincia.model.pictureList
 import com.amonteiro.a01_supvincia.ui.Routes
 import com.amonteiro.a01_supvincia.ui.theme._01_SupVinciATheme
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
@@ -78,15 +78,10 @@ fun SearchScreenPreviewDark() {
 
 //Composable représentant l'ensemble de l'écran
 @Composable
-fun SearchScreen(navController: NavHostController? = null) {
+fun SearchScreen(navController: NavHostController? = null, viewModel: MainViewModel = androidx.lifecycle.viewmodel.compose.viewModel()) {
 
-
-    var searchText = remember {
-        mutableStateOf("")
-    }
-
-    val filterList = pictureList.filter {
-        it.text.contains(searchText.value)
+    val filterList = viewModel.myList.filter {
+        it.text.contains(viewModel.searchText.value)
     }
 
     Column(
@@ -94,7 +89,7 @@ fun SearchScreen(navController: NavHostController? = null) {
             .padding(8.dp)
     ) {
 
-        SearchBar(searchText = searchText)
+        SearchBar(searchText = viewModel.searchText)
 
         Spacer(Modifier.size(8.dp))
 
@@ -111,7 +106,7 @@ fun SearchScreen(navController: NavHostController? = null) {
 
         Row(modifier = Modifier.align(Alignment.CenterHorizontally)) {
             Button(
-                onClick = { searchText.value = "" },
+                onClick = { viewModel.uploadSearchText("")},
                 contentPadding = ButtonDefaults.ButtonWithIconContentPadding
             ) {
                 Icon(
@@ -126,7 +121,9 @@ fun SearchScreen(navController: NavHostController? = null) {
             Spacer(Modifier.size(8.dp))
 
             Button(
-                onClick = { /* Do something! */ },
+                onClick = {
+                          viewModel.loadData()
+                          },
                 contentPadding = ButtonDefaults.ButtonWithIconContentPadding
             ) {
                 Icon(

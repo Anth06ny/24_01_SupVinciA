@@ -73,7 +73,11 @@ dependencies {
     //Chargement image url
     implementation("com.github.bumptech.glide:compose:1.0.0-beta01")
 
+    //§Navigation
     implementation("androidx.navigation:navigation-compose:2.+")
+
+    //Gestion des données
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.+")
 
 
 

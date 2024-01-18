@@ -8,12 +8,14 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.amonteiro.a01_supvincia.model.MainViewModel
 import com.amonteiro.a01_supvincia.ui.Routes
 import com.amonteiro.a01_supvincia.ui.screen.DetailScreen
 import com.amonteiro.a01_supvincia.ui.screen.SearchScreen
@@ -37,13 +39,14 @@ class MainActivity : ComponentActivity() {
 fun AppNavigation(){
 
     val navController : NavHostController = rememberNavController()
+    val viewModel : MainViewModel = viewModel()
 
     NavHost(navController = navController,
         startDestination = Routes.SearchScreen.route
     ) {
 
         composable(Routes.SearchScreen.route) {
-            SearchScreen(navController)
+            SearchScreen(navController, viewModel)
         }
 
 
@@ -53,7 +56,7 @@ fun AppNavigation(){
             )
         ) {
             val position = it.arguments?.getInt("data", 0) ?: 0
-            DetailScreen(position, navController = navController)
+            DetailScreen(position, navController = navController, viewModel)
         }
 
     }
