@@ -80,6 +80,7 @@ fun SearchScreenPreviewDark() {
 @Composable
 fun SearchScreen(navController: NavHostController? = null) {
 
+
     var searchText = remember {
         mutableStateOf("")
     }
@@ -169,6 +170,8 @@ fun SearchBar(
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
 fun PictureRowItem(modifier: Modifier = Modifier, data: PictureData, onPictureClick : () -> Unit = {}) {
+
+
 
     var isExpanded by remember { mutableStateOf(false) }
 

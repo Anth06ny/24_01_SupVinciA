@@ -22,6 +22,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.amonteiro.a01_supvincia.R
 import com.amonteiro.a01_supvincia.model.pictureList
@@ -63,7 +64,7 @@ fun DetailScreenPreviewDark() {
 //Composable représentant l'ensemble de l'écran
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
-fun DetailScreen(position:Int, navController: NavHostController? = null) {
+fun DetailScreen(position: Int, navController: NavHostController? = null) {
 
     val pictureData = pictureList.getOrNull(position)
 
@@ -72,13 +73,15 @@ fun DetailScreen(position:Int, navController: NavHostController? = null) {
             .padding(8.dp)
     ) {
 
-
-        Text(text = pictureData?.text ?: "Pas de donnée",
+        Text(
+            text = pictureData?.text ?: "Pas de donnée",
+            fontSize = 36.sp,
             textAlign = TextAlign.Center,
+            color = MaterialTheme.colorScheme.secondary,
             modifier = Modifier.fillMaxWidth()
         )
 
-        if(pictureData != null) {
+        if (pictureData != null) {
             GlideImage(
                 model = pictureData.url,
                 //Dans string.xml
@@ -91,20 +94,23 @@ fun DetailScreen(position:Int, navController: NavHostController? = null) {
                 contentScale = ContentScale.Fit,
                 //même autres champs qu'une Image classique
                 modifier = Modifier
-                    .fillMaxWidth(                    )
+                    .fillMaxWidth()
                     .weight(1f)
             )
         }
 
-        Text(text = pictureData?.longText ?: "Pas de donnée",
+        Text(
+            text = pictureData?.longText ?: "Pas de donnée",
             textAlign = TextAlign.Center,
-            modifier = Modifier.fillMaxWidth())
+            modifier = Modifier.fillMaxWidth()
+        )
+        Spacer(Modifier.size(16.dp))
 
         Button(
             onClick = {
 
                 navController?.popBackStack()
-                      },
+            },
             contentPadding = ButtonDefaults.ButtonWithIconContentPadding,
             modifier = Modifier.align(alignment = Alignment.CenterHorizontally)
         ) {
@@ -117,5 +123,6 @@ fun DetailScreen(position:Int, navController: NavHostController? = null) {
             Text("Retour")
         }
 
+        Spacer(Modifier.size(8.dp))
     }
 }
