@@ -6,4 +6,12 @@ sealed class Routes(val route : String) {
         fun addParam(position: Int) = "detailScreen/$position"
     }
 
+
+    object MexicanFoodScreen : Routes("mexicanScreen")
+
+    object MexicanFoodDetailScreen : Routes("mexicanDetailScreen/{data}") {
+        fun addParam(id: Int) = "mexicanDetailScreen/$id"
+    }
+
+
 }

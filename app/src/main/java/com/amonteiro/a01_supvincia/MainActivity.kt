@@ -18,6 +18,7 @@ import androidx.navigation.navArgument
 import com.amonteiro.a01_supvincia.model.MainViewModel
 import com.amonteiro.a01_supvincia.ui.Routes
 import com.amonteiro.a01_supvincia.ui.screen.DetailScreen
+import com.amonteiro.a01_supvincia.ui.screen.MexicanFoodScreen
 import com.amonteiro.a01_supvincia.ui.screen.SearchScreen
 import com.amonteiro.a01_supvincia.ui.theme._01_SupVinciATheme
 
@@ -41,16 +42,29 @@ fun AppNavigation(){
     val navController : NavHostController = rememberNavController()
     val viewModel : MainViewModel = viewModel()
 
+
     NavHost(navController = navController,
-        startDestination = Routes.SearchScreen.route
+        startDestination = Routes.MexicanFoodScreen.route
     ) {
 
         composable(Routes.SearchScreen.route) {
             SearchScreen(navController, viewModel)
         }
 
-
         composable(Routes.DetailScreen.route,
+            arguments = listOf(
+                navArgument("data"){ type = NavType.IntType}
+            )
+        ) {
+            val position = it.arguments?.getInt("data", 0) ?: 0
+            DetailScreen(position, navController = navController, viewModel)
+        }
+
+        composable(Routes.MexicanFoodScreen.route) {
+            MexicanFoodScreen(navController, viewModel)
+        }
+
+        composable(Routes.MexicanFoodDetailScreen.route,
             arguments = listOf(
                 navArgument("data"){ type = NavType.IntType}
             )

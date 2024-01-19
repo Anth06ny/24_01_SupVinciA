@@ -6,7 +6,7 @@ import okhttp3.OkHttpClient
 import okhttp3.Request
 
 fun main() {
-
+println(MexicanFoodAPI.loadFoods())
 }
 
 object MexicanFoodAPI {
@@ -18,6 +18,13 @@ object MexicanFoodAPI {
     fun loadFood(id: Int): MexicanFoodBean {
         val json = sendGet(URL_API + "/4")
         return gson.fromJson(json, MexicanFoodBean::class.java)
+    }
+
+
+    fun loadFoods(): List<MexicanAllFoodBeanItem> {
+        val json = sendGet(URL_API )
+        println(json)
+        return gson.fromJson(json, Array<MexicanAllFoodBeanItem>::class.java).toList()
     }
 
     //Méthode qui prend en entrée une url, execute la requête
@@ -69,4 +76,13 @@ data class Method(
     @SerializedName("Step 4")
     var step4: String?
 )
+
+
+data class MexicanAllFoodBeanItem(
+    var difficulty: String,
+    var id: String,
+    var image: String,
+    var title: String
+)
+
 

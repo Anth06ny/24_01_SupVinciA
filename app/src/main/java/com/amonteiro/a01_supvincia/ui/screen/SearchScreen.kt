@@ -21,6 +21,7 @@ import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Send
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -43,6 +44,7 @@ import com.amonteiro.a01_supvincia.R
 import com.amonteiro.a01_supvincia.model.MainViewModel
 import com.amonteiro.a01_supvincia.model.PictureData
 import com.amonteiro.a01_supvincia.ui.Routes
+import com.amonteiro.a01_supvincia.ui.components.ErrorView
 import com.amonteiro.a01_supvincia.ui.theme._01_SupVinciATheme
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
@@ -94,6 +96,15 @@ fun SearchScreen(navController: NavHostController? = null, viewModel: MainViewMo
     ) {
 
         SearchBar(searchText = viewModel.searchText)
+
+        if(viewModel.runInProgress.value) {
+            CircularProgressIndicator()
+        }
+
+
+        if(viewModel.errorMessage.value.isNotBlank()) {
+            ErrorView(message = viewModel.errorMessage.value)
+        }
 
         Spacer(Modifier.size(8.dp))
 
